@@ -18,21 +18,33 @@
     <div class="mb-3">
       <label for="EmailInput" class="form-label">Email address</label>
       <input type="email" class="form-control" id="EmailInput" placeholder="votre.adresse@mail.fr" >
+      <div class="invalid-feedback">
+        L'adresse mail n'est pas au bon format: adresse.mai@site.com
+      </div>
     </div>
 
     <div class="mb-3">
-      <label for="PasswordInput" class="form-label">Mot de passe</label>
-      <input type="password" class="form-control" id="PasswordInput">
+        <label for="PasswordInput" class="form-label">Mot de passe</label>
+        <input type="password" class="form-control" id="PasswordInput">
+        <div class="invalid-feedback">
+          Le mot de passe n'est pas assez robuste: au moins une lettre, un chiffre, une majuscule et un caractère spécial
+        </div>
+        <div class="valid-feedback">
+          Le mot de passe est robuste.
+        </div>
     </div>
     <div class="mb-3">
-      <label for="ValidatePasswordInput" class="form-label">Validez votre mot de passe</label>
-      <input type="password" class="form-control" id="ValidatePasswordInput">
-    </div>
+        <label for="ValidatePasswordInput" class="form-label">Validez votre mot de passe</label>
+        <input type="password" class="form-control" id="ValidatePasswordInput" title="essai title">
+        <div class="invalid-feedback">
+          Les deux mots de passe ne sont pas égaux.
+        </div>
+      </div>
     <div class="text-center">
-      <button type="submit" class="btn btn-primary">Inscription</button>
+        <button type="submit" class="btn btn-primary" id="btn-validation-inscription">Inscription</button>
     </div>
     <div class="text-center pt-3">
-      <a href="/connexion">Vous avez déjà un compte? Connectez-vous ici!</a>
+        <a href="/connexion">Vous avez déjà un compte? Connectez-vous ici!</a>
     </div>
   </form>
 </div>
