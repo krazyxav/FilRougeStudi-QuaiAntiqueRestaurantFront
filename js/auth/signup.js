@@ -6,6 +6,7 @@ const inputEmail = document.getElementById("EmailInput");
 const inputPassword = document.getElementById("PasswordInput");
 const inputValidatePassword = document.getElementById("ValidatePasswordInput");
 const btnValidation = document.getElementById("btn-validation-inscription");
+const formInscription = document.getElementById("formulaireInscription");
 
 //pur le champ inputNom, on écoute (keyup) quand une touche est relachée,
 // et on interprète avec la fonction validateForm
@@ -14,6 +15,7 @@ inputPrenom.addEventListener("keyup", validateForm);
 inputEmail.addEventListener("keyup", validateForm);
 inputPassword.addEventListener("keyup", validateForm);
 inputValidatePassword.addEventListener("keyup", validateForm);
+btnValidation.addEventListener("click", Inscrire_utilisateur);
 
 function validateForm() {
     const nomOk = validateRequired(inputNom);
@@ -89,3 +91,39 @@ function validateRequired(input){
     }
 }
 
+function Inscrire_utilisateur(){
+    let dataForm = new FormData(formInscription);
+    let name = dataForm.get("name");
+
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+    "firstName": dataForm.get("nom"),
+    "lastName": dataForm.get("prenom"),
+    "email": dataForm.get("email"),
+    "password": dataForm.get("mdp")
+    });
+
+    const requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow"
+    };
+
+    fetch(apiURL+"registration", requestOptions)
+    .then((response) => {
+        if(response.ok){
+            return response.json();
+        }else{
+            alert("Problème d'incription");
+        }
+  
+    })
+    .then((result) => {
+        alert(dataForm.get("prenom")+", vous êtes maintenant inscrit, vous pouvez vous connecter.");
+        document.location.href="/connexion";
+    })
+    .catch((error) => console.error('error', error));
+}
