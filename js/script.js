@@ -27,9 +27,9 @@ function getToken(){
 }
 
 function setCookie(name,value,days) {
-    var expires = "";
+    let expires = "";
     if (days) {
-        var date = new Date();
+        let date = new Date();
         date.setTime(date.getTime() + (days*24*60*60*1000));
         expires = "; expires=" + date.toUTCString();
     }
@@ -37,13 +37,14 @@ function setCookie(name,value,days) {
 }
 
 function getCookie(name) {
-    var nameEQ = name + "=";
+    let nameEQ = name + "=";
     console.log("document.cookie : " + document.cookie)
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    let ca = document.cookie.split(';');
+    for(const element of ca) {
+        let c = element;
+        while (c.startsWith==' ') c = c.substring(1,c.length);
+        //avant correction par sonarlint: if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        if (c.startsWith(nameEQ)) return c.substring(nameEQ.length,c.length);
     }
     return null;
 }
@@ -52,6 +53,14 @@ function eraseCookie(name) {
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
+
+function isConnected(){
+    //console.log("getToken: " + getToken());
+    return !(getToken() == null || getToken == undefined);
+}
+
+/*
+Autre écriture de la même fonction ci-dessus
 function isConnected(){
     console.log("getToken: " + getToken());
     if(getToken() == null || getToken == undefined){
@@ -61,6 +70,7 @@ function isConnected(){
         return true;
     }
 }
+*/
 
 
 function showAndHideElementsForRoles(){
@@ -98,4 +108,37 @@ function showAndHideElementsForRoles(){
                 break;
         }
     })
+}
+
+function sanitizeHtml(text){
+    const tempHtml = document.createElement(`div`);
+    tempHtml.textContent = text;
+    return tempHtml.innerHTML;
+}
+
+function getInfoUser(){
+    console.log("Récupération des informations de l'utilisateur");
+
+    const myHeaders = new Headers();
+    myHeaders.append("X-AUTH-TOKEN", getToken());
+
+    const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
+        };
+
+    fetch(apiURL+"account/me", requestOptions)
+    .then((response) => {
+        if(response.ok){
+            return response.json();
+        }else{
+            console.log("impossible de récupérer les informations utilisateur");
+        }
+    })
+    .then(result=>{
+        return result;
+        //console.log(result);
+    })
+    .catch((error) => console.error('error à la récupération des données utilisateur: ', error));
 }

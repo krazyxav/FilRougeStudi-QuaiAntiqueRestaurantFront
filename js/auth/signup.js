@@ -93,16 +93,16 @@ function validateRequired(input){
 
 function Inscrire_utilisateur(){
     let dataForm = new FormData(formInscription);
-    let name = dataForm.get("name");
+    //let name = dataForm.get("name");
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
-    "firstName": dataForm.get("nom"),
-    "lastName": dataForm.get("prenom"),
-    "email": dataForm.get("email"),
-    "password": dataForm.get("mdp")
+    "firstName": sanitizeHtml(dataForm.get("nom")),
+    "lastName": sanitizeHtml(dataForm.get("prenom")),
+    "email": sanitizeHtml(dataForm.get("email")),
+    "password": sanitizeHtml(dataForm.get("mdp"))
     });
 
     const requestOptions = {
@@ -122,6 +122,8 @@ function Inscrire_utilisateur(){
   
     })
     .then((result) => {
+        //avant correction par sonarLint:
+        //alert(dataForm.get("prenom")+", vous êtes maintenant inscrit, vous pouvez vous connecter.");
         alert(dataForm.get("prenom")+", vous êtes maintenant inscrit, vous pouvez vous connecter.");
         document.location.href="/connexion";
     })

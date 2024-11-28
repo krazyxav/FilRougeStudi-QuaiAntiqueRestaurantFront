@@ -14,8 +14,8 @@ function checkCredentials(){
     myHeaders.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
-    "username": dataForm.get("email"),
-    "password": dataForm.get("mdp")
+    "username": sanitizeHtml(dataForm.get("email")),
+    "password": sanitizeHtml(dataForm.get("mdp"))
     });
 
     const requestOptions = {
